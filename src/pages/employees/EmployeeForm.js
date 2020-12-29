@@ -41,6 +41,18 @@ export default function EmployeeForm() {
                         value={values.email}
                         onChange={handleInputChange}
                     />
+                    <Controls.Input
+                        label={"Mobile"}
+                        name={"mobile"}
+                        value={values.mobile}
+                        onChange={handleInputChange}
+                    />
+                    <Controls.Input
+                        label={"City"}
+                        name={"city"}
+                        value={values.city}
+                        onChange={handleInputChange}
+                    />
                 </Grid>
                 <Grid item xs={6}>
                     <Controls.RadioGroup
@@ -57,6 +69,13 @@ export default function EmployeeForm() {
                         value={values.departmentId}
                         onChange={handleInputChange}
                         options={employeeService.getDepartments()}
+                    />
+
+                    <Controls.DatePicker
+                        name='hireDate'
+                        label='Hire Date'
+                        value={values.hireDate}
+                        onChange={handleInputChange}
                     />
 
                     <Controls.Checkbox
