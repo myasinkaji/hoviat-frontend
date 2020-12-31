@@ -14,13 +14,22 @@ const useStyle = makeStyles((theme) => ({
 
 }));
 const defaultTheme = createMuiTheme({
+    typography: {
+      fontSize: 12
+    },
     palette: {
         primary: {
-            main: '#3f51b5'
+            main: '#333996',
+            // main: '#3f51b5',
+            light: '#3c44b126',
+        },
+        secondary: {
+            main: '#f83245',
+            light: '#f8324526',
         },
         background: {
-            default: '#e9e4e4'
-            // default: '#c6c3c3'
+            // default: '#f4f5fd',
+            default: '#ebecfc',
         }
     },
     shape: {
@@ -63,7 +72,6 @@ function App() {
 
     const changeTheme = (event) => {
         setState({index: state.index ? 0 : 1});
-        console.log(state);
     };
 
     return (
