@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: "#f6f5f5"
     },
     pageHeader: {
-        padding: theme.spacing(4),
+        padding: theme.spacing(2),
         display: 'flex',
         marginBottom: theme.spacing(2),
     },

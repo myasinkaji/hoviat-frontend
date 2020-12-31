@@ -11,11 +11,12 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 export default function Form(props) {
+    const {onSubmit, children} = props;
     const classes = useStyles();
 
     return (
-        <form className={classes.root}>
-            {props.children}
+        <form className={classes.root} onSubmit={onSubmit}>
+            {children}
         </form>
     );
 }
@@ -31,9 +32,14 @@ export function useForm(initialFValues) {
         })
     };
 
+    const handleReset = () => {
+        setValues(initialFValues);
+    }
+
     return {
         values,
         setValues,
-        handleInputChange
+        handleInputChange,
+        handleReset,
     };
 }
