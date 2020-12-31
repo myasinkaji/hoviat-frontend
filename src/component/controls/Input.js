@@ -11,7 +11,7 @@ export default function Input(props) {
             name={name}
             value={value}
             label={label}
-            {/*{...(error && {error: true, 'helperText':error})}*/}
+            /*{...(error && {error: true, 'helperText':error})}*/
             {...(error ? {error: true, 'helperText':error}: {})}
             onChange={onChange} />
     );
