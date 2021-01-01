@@ -9,6 +9,11 @@ export const getDepartments = () => ([
     {id: 3, title: 'Accounting'},
     {id: 4, title: 'HR'},
 ]);
+export const genders = [
+    {id: 'male', title: 'Male'},
+    {id: 'female', title: 'Female'},
+    {id: 'other', title: 'Other'},
+];
 
 export const saveEmployee = employee => {
     const id = generateId();
@@ -22,7 +27,9 @@ export const saveEmployee = employee => {
     localStorage.setItem(KEYS.employees, JSON.stringify(employees));
 
 }
-
+export const search = (employee) => {
+    return [];
+}
 function generateId() {
     let id = localStorage.getItem(KEYS.employeeId);
     if (!id)

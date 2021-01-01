@@ -39,8 +39,13 @@ export default function Employees() {
         recordsAfterPagingAndSorting
     } = useTable(records, employeeService.headers());
 
-    const awareState = () => {
+    const submitAware = () => {
         setRecords(employeeService.getAllEmployees);
+        setOpenPopup(false);
+    }
+
+    const handleSearch = values => {
+        setRecords(employeeService.search(values));
     }
 
     return (
@@ -54,7 +59,7 @@ export default function Employees() {
             <Paper className={classes.pageContent}>
                 <Grid container>
                     <Grid item>
-                        <EmployeeSearch awareState={awareState}/>
+                        <EmployeeSearch handleSearch={handleSearch}/>
                     </Grid>
                     <Grid item xs={6}>
                     </Grid>
@@ -98,7 +103,7 @@ export default function Employees() {
                     title={"New Employee"}
                     subTitle={"Adding New Employee"}
                     openPopup={openPopup}>
-                    <EmployeeForm awareState={awareState}/>
+                    <EmployeeForm submitAware={submitAware}/>
                 </Popup>
             </Paper>
         </>

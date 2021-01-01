@@ -12,21 +12,16 @@ const initialFValue = {
     email: '',
     mobile: '',
     city: '',
-    gender: 'female',
+    gender: 'male',
     departmentId: '',
     hireDate: new Date(),
     isPermanent: false
 };
 
-const genders = [
-    {id: 'male', title: 'Male'},
-    {id: 'female', title: 'Female'},
-    {id: 'other', title: 'Other'},
-]
 export default function EmployeeForm(props) {
 
     const {values, setValues, handleInputChange, handleReset} = useForm(initialFValue, employeeService);
-    const {awareState} = props;
+    const {submitAware} = props;
     const [errors, setErrors] = useState({});
 
     const validate = () => {
@@ -46,7 +41,7 @@ export default function EmployeeForm(props) {
         if (validate()) {
             employeeService.saveEmployee(values);
             handleReset();
-            awareState();
+            submitAware();
         }
     }
 
@@ -88,7 +83,7 @@ export default function EmployeeForm(props) {
                         name="gender"
                         value={values.gender}
                         handler={handleInputChange}
-                        items={genders}
+                        items={employeeService.genders}
                     />
 
                     <Controls.Select
