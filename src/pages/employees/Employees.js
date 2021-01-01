@@ -11,6 +11,8 @@ import Popup from "../../component/Popup";
 import Controls from "../../component/controls/Controls";
 import EmployeeSearch from "./EmployeeSearch";
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles(theme => ({
@@ -20,6 +22,13 @@ const useStyles = makeStyles(theme => ({
     pageContent: {
         margin: theme.spacing(5),
         padding: theme.spacing(3)
+
+    },
+    oddRow: {
+        backgroundColor: 'rgba(246,197,202,0.15)'
+    },
+    evenRow: {
+        backgroundColor: theme.palette.primary.light
     }
 }));
 
@@ -28,6 +37,7 @@ export default function Employees() {
     const classes = useStyles();
     const [records, setRecords] = useState(employeeService.getAllEmployees);
     const [openPopup, setOpenPopup] = useState(false);
+    const [recordForUpdate, setRecordForUpdate] = useState({});
 
     const {
         TblContainer,
@@ -41,13 +51,20 @@ export default function Employees() {
 
     const submitAware = () => {
         setRecords(employeeService.getAllEmployees);
-        setOpenPopup(false);
+        handlePopupClose()
     }
 
     const handleSearch = values => {
         setRecords(employeeService.search(values));
     }
-
+    const handleOnUpdateClick = (record) => {
+        setRecordForUpdate(record);
+        setOpenPopup(true);
+    }
+    const handlePopupClose = () => {
+        setOpenPopup(false);
+        setRecordForUpdate({});
+    }
     return (
         <>
             <PageHeader
@@ -58,7 +75,7 @@ export default function Employees() {
 
             <Paper className={classes.pageContent}>
                 <Grid container>
-                    <Grid item>
+                    <Grid item xs={12}>
                         <EmployeeSearch handleSearch={handleSearch}/>
                     </Grid>
                     <Grid item xs={6}>
@@ -76,12 +93,22 @@ export default function Employees() {
                         <TableBody>
                             {
                                 recordsAfterPagingAndSorting().map((record, index) => (
-                                    <TableRow key={record.id}>
+                                    <TableRow
+                                        className={index % 2 === 0 ? '' : classes.oddRow }
+                                              key={record.id}>
                                         <TableCell>{index + 1}</TableCell>
                                         <TableCell>{record.fullName}</TableCell>
                                         <TableCell>{record.email}</TableCell>
                                         <TableCell>{record.mobile}</TableCell>
                                         <TableCell>{record.department}</TableCell>
+                                        <TableCell>
+                                            <Controls.ActionButton color={'secondary'} onClick={() => {handleOnUpdateClick(record)}}>
+                                                <EditIcon fontSize={"small"} />
+                                            </Controls.ActionButton>
+                                            <Controls.ActionButton color={'secondary'}>
+                                                <DeleteIcon fontSize={"small"} />
+                                            </Controls.ActionButton>
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             }
@@ -99,11 +126,11 @@ export default function Employees() {
                 </Paper>
                 <Popup
                     icon={<PersonAddIcon fontSize="default"/>}
-                    handleOnClose={() => setOpenPopup(false)}
+                    handleOnClose={handlePopupClose}
                     title={"New Employee"}
                     subTitle={"Adding New Employee"}
                     openPopup={openPopup}>
-                    <EmployeeForm submitAware={submitAware}/>
+                    <EmployeeForm recordForUpdate={recordForUpdate} submitAware={submitAware}/>
                 </Popup>
             </Paper>
         </>

@@ -20,8 +20,10 @@ const initialFValue = {
 
 export default function EmployeeForm(props) {
 
-    const {values, setValues, handleInputChange, handleReset} = useForm(initialFValue, employeeService);
-    const {submitAware} = props;
+    const {recordForUpdate, submitAware} = props;
+    const {values, setValues, handleInputChange, handleReset} =
+        useForm(recordForUpdate ? recordForUpdate : initialFValue, employeeService);
+
     const [errors, setErrors] = useState({});
 
     const validate = () => {

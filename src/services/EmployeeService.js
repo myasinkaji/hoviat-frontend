@@ -48,6 +48,7 @@ export const headers = () => ([
         {id: 2, title: 'Email Address'},
         {id: 3, title: 'Mobile Number'},
         {id: 4, title: 'Department'},
+        {id: 5, title: 'Actions'},
     ]
 );
 

@@ -5,6 +5,9 @@ import {makeStyles} from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
     root: {
         // borderRadius: 0
+        '&:hover':{
+            color: theme.palette.primary.dark
+        }
     },
     primary: {
         backgroundColor: theme.palette.primary.light,
