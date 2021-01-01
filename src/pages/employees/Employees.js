@@ -13,6 +13,7 @@ import EmployeeSearch from "./EmployeeSearch";
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Notification from "../../component/Notification";
 
 
 const useStyles = makeStyles(theme => ({
@@ -37,7 +38,8 @@ export default function Employees() {
     const classes = useStyles();
     const [records, setRecords] = useState(employeeService.getAllEmployees);
     const [openPopup, setOpenPopup] = useState(false);
-    const [recordForUpdate, setRecordForUpdate] = useState({});
+    const [recordForUpdate, setRecordForUpdate] = useState(undefined);
+    const [notify, setNotify] = useState({isOpen: false, title: '', message: '', type: ''});
 
     const {
         TblContainer,
@@ -51,7 +53,13 @@ export default function Employees() {
 
     const submitAware = () => {
         setRecords(employeeService.getAllEmployees);
-        handlePopupClose()
+        handlePopupClose();
+        setNotify({
+            isOpen: true,
+            title: 'Success',
+            message: 'Employee is registered successfully',
+            type: 'success'
+        });
     }
 
     const handleSearch = values => {
@@ -63,7 +71,7 @@ export default function Employees() {
     }
     const handlePopupClose = () => {
         setOpenPopup(false);
-        setRecordForUpdate({});
+        setRecordForUpdate(undefined);
     }
     return (
         <>
@@ -133,6 +141,10 @@ export default function Employees() {
                     <EmployeeForm recordForUpdate={recordForUpdate} submitAware={submitAware}/>
                 </Popup>
             </Paper>
+            <Notification
+                notify={notify}
+                setNotify={setNotify}
+            />
         </>
     );
 }
