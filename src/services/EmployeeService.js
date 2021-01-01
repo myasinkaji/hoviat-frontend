@@ -37,10 +37,10 @@ function generateId() {
 }
 
 export const headers = () => ([
-        {id: 0, title: 'Full Name'},
-        {id: 1, title: 'Email Address'},
-        {id: 2, title: 'Mobile Number'},
-        {id: 3, title: 'Department'},
+        {id: 1, title: 'Full Name'},
+        {id: 2, title: 'Email Address'},
+        {id: 3, title: 'Mobile Number'},
+        {id: 4, title: 'Department'},
     ]
 );
 

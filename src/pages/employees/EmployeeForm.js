@@ -3,6 +3,8 @@ import {Grid} from "@material-ui/core";
 import Form, {useForm} from "../../component/Form";
 import Controls from "../../component/controls/Controls";
 import * as employeeService from '../../services/EmployeeService';
+import RestorePageIcon from '@material-ui/icons/RestorePage';
+import SaveIcon from '@material-ui/icons/Save';
 
 const initialFValue = {
     id: 0,
@@ -116,12 +118,14 @@ export default function EmployeeForm(props) {
                         <Controls.Button
                             type='submit'
                             text='Register'
+                            startIcon={<SaveIcon />}
                         />
 
                         <Controls.Button
                             color='secondary'
                             text='Reset'
                             onClick={handleReset}
+                            startIcon={<RestorePageIcon />}
                         />
                     </div>
                 </Grid>

@@ -3,7 +3,7 @@ import Table from "@material-ui/core/Table";
 import {makeStyles} from "@material-ui/core/styles";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {TableCell} from "@material-ui/core";
+import {TableCell, TableSortLabel} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -31,6 +31,8 @@ export default function useTable(records, headers) {
     const classes = useStyles();
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
+    const [order, setOrder] = useState();
+    const [orderBy, setOrderBy] = useState();
     const pages = [5, 10, 15];
 
     const handleChangePage = (event, newPage) => {
@@ -41,8 +43,32 @@ export default function useTable(records, headers) {
         setRowsPerPage(event.target.value);
     }
 
-    const pageAfterSortAndSelect = () => {
-        return records.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+    const sort = (array, comparator) => {
+        debugger;
+        return array.sort((a, b) => {
+            let f1 = a[Object.keys(a)[orderBy]];
+            let f2 = b[Object.keys(b)[orderBy]];
+            let i = 'asc' === order ? -1 : 1;
+            return (f1 < f2 ? i : f2 < f1 ? i : 0);
+        });
+    }
+    const getComparator = (order, orderBy) => {
+
+    }
+    const recordsAfterPagingAndSorting = () => {
+        return sort(records, getComparator(order, orderBy)).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+    };
+
+    const handleSortRequest = cellId => {
+        /*const isAsc = orderBy === cellId && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(cellId);*/
+        if (orderBy === cellId) {
+            setOrder(order === 'asc' ? 'desc' : 'asc');
+        } else {
+            setOrder('desc');
+        }
+        setOrderBy(cellId);
     };
 
     const TblContainer = (props) => (
@@ -52,7 +78,14 @@ export default function useTable(records, headers) {
                     <TableCell align={"left"} key={0}>id</TableCell>
                     {
                         headers.map(header => (
-                            <TableCell align={"left"} key={header.id}>{header.title}</TableCell>
+                            <TableCell align={"left"} key={header.id}>
+                                <TableSortLabel
+                                    active={orderBy === header.id}
+                                    direction={orderBy === header.id ? order : 'asc'}
+                                    onClick={() => {handleSortRequest(header.id)}}>
+                                    {header.title}
+                                </TableSortLabel>
+                            </TableCell>
                         ))
                     }
                 </TableRow>
@@ -69,7 +102,7 @@ export default function useTable(records, headers) {
             TblContainer,
             handleChangePage,
             handleChangeRowsPerPage,
-            pageAfterSortAndSelect,
+            recordsAfterPagingAndSorting,
 
         }
     );
