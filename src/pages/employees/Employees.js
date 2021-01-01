@@ -14,6 +14,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Notification from "../../component/Notification";
+import ConfirmDialog from "../../component/ConfirmDialog";
 
 
 const useStyles = makeStyles(theme => ({
@@ -40,6 +41,7 @@ export default function Employees() {
     const [openPopup, setOpenPopup] = useState(false);
     const [recordForUpdate, setRecordForUpdate] = useState(undefined);
     const [notify, setNotify] = useState({isOpen: false, title: '', message: '', type: ''});
+    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
 
     const {
         TblContainer,
@@ -68,6 +70,16 @@ export default function Employees() {
     const handleOnUpdateClick = (record) => {
         setRecordForUpdate(record);
         setOpenPopup(true);
+    }
+    const handleOnDeleteClick = id => {
+        employeeService.deleteEmployee(id);
+        setNotify({
+            title: 'Success',
+            isOpen: true,
+            type: 'error',
+            message: `${id} is deleted Successfully`
+        });
+        setRecords(employeeService.getAllEmployees);
     }
     const handlePopupClose = () => {
         setOpenPopup(false);
@@ -102,19 +114,33 @@ export default function Employees() {
                             {
                                 recordsAfterPagingAndSorting().map((record, index) => (
                                     <TableRow
-                                        className={index % 2 === 0 ? '' : classes.oddRow }
-                                              key={record.id}>
+                                        className={index % 2 === 0 ? '' : classes.oddRow}
+                                        key={record.id}>
                                         <TableCell>{index + 1}</TableCell>
                                         <TableCell>{record.fullName}</TableCell>
                                         <TableCell>{record.email}</TableCell>
                                         <TableCell>{record.mobile}</TableCell>
                                         <TableCell>{record.department}</TableCell>
                                         <TableCell>
-                                            <Controls.ActionButton color={'secondary'} onClick={() => {handleOnUpdateClick(record)}}>
-                                                <EditIcon fontSize={"small"} />
+                                            <Controls.ActionButton
+                                                color={'secondary'}
+                                                onClick={() => {
+                                                    handleOnUpdateClick(record)
+                                                }}>
+                                                <EditIcon fontSize={"small"}/>
                                             </Controls.ActionButton>
-                                            <Controls.ActionButton color={'secondary'}>
-                                                <DeleteIcon fontSize={"small"} />
+
+                                            <Controls.ActionButton
+                                                color={'secondary'}
+                                                onClick={() => {
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure to delete this record?',
+                                                        subTitle: "You can't undo this operation",
+                                                        onConfirm: () => handleOnDeleteClick(record.id)
+                                                    });
+                                                }}>
+                                                <DeleteIcon fontSize={"small"}/>
                                             </Controls.ActionButton>
                                         </TableCell>
                                     </TableRow>
@@ -144,6 +170,10 @@ export default function Employees() {
             <Notification
                 notify={notify}
                 setNotify={setNotify}
+            />
+            <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
             />
         </>
     );

@@ -27,6 +27,9 @@ export const saveEmployee = employee => {
     localStorage.setItem(KEYS.employees, JSON.stringify(employees));
 
 }
+export const deleteEmployee = id => {
+
+}
 export const search = (employee) => {
     return [];
 }
